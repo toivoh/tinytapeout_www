@@ -10,7 +10,7 @@ If your design needs memory, you have the following options:
 
 1. Use registers (DFF) in your design area
 2. Use DFF RAM (efficient array of DFFs)
-3. Use an external SPI RAM (can be simulated by the RP2040 on the demo board)
+3. Use a RAM emulator running on the RP2040 on the demo board or an external SPI RAM (can be simulated by a RAM emulator)
 
 #### Using registers
 
@@ -35,6 +35,11 @@ For Tiny Tapeout, you can use the RAM32 macro, which is 128 bytes arranged as 32
 
 Including DFF RAM in your design is a bit more complicated than using registers, as connecting the power and ground pins is not trivial. You can use the [DFF RAM example project](https://github.com/TinyTapeout/tt06-dffram-example) as a starting point.
 
-#### Using external SPI RAM
+#### Using a RAM emulator / external SPI RAM
 
-The RP2040 on the [demo board](../pcb) can be configured to provide 64 kbytes of RAM to the chip over SPI thanks to the [spi-ram-emu project](https://github.com/MichaelBell/spi-ram-emu) by Mike Bell. It simulates the 23LC512 SPI RAM chip. This is a good option if you need a lot of memory, but it's also the slowest option.
+The RP2040 on the [demo board](../pcb) can be configured as a RAM emulator thanks to custom firmwares:
+
+- The [spi-ram-emu project](https://github.com/MichaelBell/spi-ram-emu) by Mike Bell provides 64 kbytes of RAM to the chip over SPI. It simulates the 23LC512 SPI RAM chip, which can be used instead, if you have access to one.
+- The [pio-ram-emulator project](https://github.com/toivoh/pio-ram-emulator) by Toivo Henningsson provides 128 kbytes of RAM to the chip a using custom 4 pin protocol. The emulator has been optimized for low and predictable latency and high bandwidth considering that it needs to run on the RP2040 using a 4 pin interface.
+
+These are good options if you need a lot of memory, but they are also the slowest ones. Using pio-ram-emulator is faster, but spi-ram-emu allows the RP2040 to be replaced with an SPI RAM chip.
